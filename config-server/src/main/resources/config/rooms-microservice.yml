@@ -1,0 +1,23 @@
+server:
+  port: 9093
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/roomsDB
+    username: michael
+    password: jinwoo2912
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-Url:
+      defaultZone: http://localhost:8761/eureka

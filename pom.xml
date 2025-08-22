@@ -20,6 +20,10 @@
     <module>api-gateway</module>
     <module>eureka-server</module>
     <module>config-server</module>
+    <module>host-microservice</module>
+    <module>employee-microservice</module>
+    <module>rooms-microservice</module>
+    <module>booking-microservice</module>
   </modules>
 
   <properties>

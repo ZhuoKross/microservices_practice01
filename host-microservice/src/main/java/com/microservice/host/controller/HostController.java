@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/rooms/")
-public class RoomsController {
+public class HostController {
 
-    @GetMapping("all")
+    @GetMapping("/all")
     public void getAllRooms (){
 
     }

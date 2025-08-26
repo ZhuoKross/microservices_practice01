@@ -25,7 +25,7 @@ public class HostController {
         List<Host> listOfEntityHost =  hostService.getAllHosts();
 
         List<HostDTO> hostDTOList = listOfEntityHost.stream()
-                .map((host) -> new HostDTO(host.isVipHost, host.isRegularHost, host.price,host.document, host.nombre))
+                .map((host) -> new HostDTO(host.isVipHost, host.isRegularHost, host.price,host.document, host.name))
                 .toList();
 
         return ResponseEntity.ok().body(hostDTOList);
@@ -33,17 +33,32 @@ public class HostController {
 
     @PostMapping("/create")
     public ResponseEntity<Host> createHost(@RequestBody HostDTO hostDTO){
-        System.out.println("data: " + hostDTO);
         Host hostEntity = Host.builder()
                 .isRegularHost(hostDTO.isRegularHost())
                 .isVipHost(hostDTO.isVipHost())
                 .price(hostDTO.price())
                 .document(hostDTO.document())
-                .nombre(hostDTO.nombre())
+                .name(hostDTO.name())
                 .build();
 
         Host hostResponse = hostService.createHost(hostEntity);
 
         return ResponseEntity.ok().body(hostResponse);
+    }
+
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updateHost(@PathVariable("id") Long idHost, @RequestBody HostDTO hostDTO){
+        Host hostEntity = Host.builder()
+                .isVipHost(hostDTO.isVipHost())
+                .isRegularHost(hostDTO.isRegularHost())
+                .price(hostDTO.price())
+                .document(hostDTO.document())
+                .name(hostDTO.name())
+                .build();
+
+        Host response = hostService.updateHost(idHost, hostEntity);
+
+        return ResponseEntity.ok().;
     }
 }

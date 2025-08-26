@@ -30,6 +30,6 @@ public class Host {
     public int document;
 
     @Column
-    public String nombre;
+    public String name;
 
 }

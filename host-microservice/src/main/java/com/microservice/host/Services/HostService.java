@@ -22,4 +22,16 @@ public class HostService {
     public Host createHost(Host host){
         return hostRepository.save(host);
     }
+
+    public Host updateHost(Long idHost, Host host){
+        Host hostToUpdate = hostRepository.findById(idHost).orElse(null);
+
+        hostToUpdate.isRegularHost = host.isRegularHost;
+        hostToUpdate.isVipHost = host.isVipHost;
+        hostToUpdate.price = host.price;
+        hostToUpdate.document = host.document;
+        hostToUpdate.name = host.name;
+
+        return hostRepository.save(hostToUpdate);
+    }
 }

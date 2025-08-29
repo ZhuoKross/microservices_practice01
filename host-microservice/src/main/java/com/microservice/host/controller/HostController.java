@@ -4,6 +4,7 @@ package com.microservice.host.controller;
 import com.microservice.host.DTO.HostDTO;
 import com.microservice.host.Entity.Host;
 import com.microservice.host.Services.HostService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,19 @@ public class HostController {
         return ResponseEntity.ok().body(hostDTOList);
     }
 
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getHost(@PathVariable Long id){
+        HostDTO hostFound = hostService.getOneHost(id);
+
+        if(hostFound != null) {
+            return ResponseEntity.ok(hostFound);
+        }else {
+            return ResponseEntity.unprocessableEntity().body("Can't get the host you searched :(");
+        }
+    }
+
+
     @PostMapping("/create")
     public ResponseEntity<Host> createHost(@RequestBody HostDTO hostDTO){
         Host hostEntity = Host.builder()
@@ -48,17 +62,16 @@ public class HostController {
 
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateHost(@PathVariable("id") Long idHost, @RequestBody HostDTO hostDTO){
-        Host hostEntity = Host.builder()
-                .isVipHost(hostDTO.isVipHost())
-                .isRegularHost(hostDTO.isRegularHost())
-                .price(hostDTO.price())
-                .document(hostDTO.document())
-                .name(hostDTO.name())
-                .build();
+    public ResponseEntity<?> updateHost(@PathVariable("id") Long idHost, @RequestBody HostDTO hostDTO){
 
-        Host response = hostService.updateHost(idHost, hostEntity);
+        Host response = hostService.updateHost(idHost, hostDTO);
 
-        return ResponseEntity.ok("Host updated successfully");
+        if(response != null){
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }else {
+            return ResponseEntity.unprocessableEntity().body("Can't update the host :(");
+        }
+
+
     }
 }

@@ -59,6 +59,6 @@ public class HostController {
 
         Host response = hostService.updateHost(idHost, hostEntity);
 
-        return ResponseEntity.ok().;
+        return ResponseEntity.ok("Host updated successfully");
     }
 }

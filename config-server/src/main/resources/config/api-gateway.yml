@@ -20,6 +20,10 @@ spring:
               uri: lb://host-microservice
               predicates:
                 - Path=/api/v1/hosts/**
+            - id: booking-microservice
+              uri: lb://booking-microservice
+              predicates:
+                  - Path=/api/v1/bookings/**
 
 
 logging:

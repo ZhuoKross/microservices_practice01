@@ -34,8 +34,17 @@ public class HostService {
         return hostDTO;
     }
 
-    public Host createHost(Host host){
-        return hostRepository.save(host);
+    public Host createHost(HostDTO hostDTO){
+
+        Host hostEntity = Host.builder()
+                .isRegularHost(hostDTO.isRegularHost())
+                .isVipHost(hostDTO.isVipHost())
+                .price(hostDTO.price())
+                .document(hostDTO.document())
+                .name(hostDTO.name())
+                .build();
+
+        return hostRepository.save(hostEntity);
     }
 
     public Host updateHost(Long idHost, HostDTO hostDTO){
@@ -58,5 +67,9 @@ public class HostService {
         hostToUpdate.name = hostEntity.name;
 
         return hostRepository.save(hostToUpdate);
+    }
+
+    public void deleteHost(Long idHost){
+         hostRepository.deleteById(idHost);
     }
 }

@@ -24,6 +24,11 @@ spring:
               uri: lb://booking-microservice
               predicates:
                   - Path=/api/v1/bookings/**
+            - id: rooms-microservice
+              uri: lb://rooms-microservice
+              predicates:
+                  - Path=/api/v1/rooms/**
+
 
 
 logging:

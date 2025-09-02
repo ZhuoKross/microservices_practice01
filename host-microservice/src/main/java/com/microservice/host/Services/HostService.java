@@ -24,6 +24,7 @@ public class HostService {
         Host hostFound = hostRepository.findById(idHost).orElse(null);
 
         HostDTO hostDTO = HostDTO.builder()
+                .id(hostFound.id)
                 .isVipHost(hostFound.isVipHost)
                 .isRegularHost(hostFound.isRegularHost)
                 .price(hostFound.price)

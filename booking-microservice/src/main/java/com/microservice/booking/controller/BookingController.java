@@ -1,15 +1,15 @@
 package com.microservice.booking.controller;
 
 import com.microservice.booking.DTO.BookingDTO;
+import com.microservice.booking.DTO.ResponseBookingDTO;
 import com.microservice.booking.Entity.Booking;
+import com.microservice.booking.Utils.Response;
 import com.microservice.booking.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -17,22 +17,40 @@ import java.util.List;
 public class BookingController {
 
 
-    BookingService bookingService;
+    private BookingService bookingService;
 
     public BookingController(BookingService bookingService){
         this.bookingService = bookingService;
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<BookingDTO>> getAllBookings (){
-        List<BookingDTO> bookingList = bookingService.getAllBookings();
-        return ResponseEntity.ok(bookingList);
+    public ResponseEntity<?> getAllBookings (){
+        try{
+            List<ResponseBookingDTO> bookingList = bookingService.getAllBookings();
+            return ResponseEntity.ok(new Response<List<ResponseBookingDTO>>("Bookings fetched succesfully", LocalDateTime.now(), bookingList));
+
+        } catch (Exception e) {
+            return ResponseEntity.unprocessableEntity().body(new Response<String>("Couldn't get the list of bookings", LocalDateTime.now(), e.getMessage()));
+        }
     };
 
     @GetMapping("/{id}")
-    public ResponseEntity<BookingDTO> getBooking (@PathVariable Long id){
-        BookingDTO bookingDTO = bookingService.getBooking(id);
+    public ResponseEntity<?> getBooking (@PathVariable Long id){
+        try {
+            ResponseBookingDTO bookingDTO = bookingService.getBooking(id);
+            return ResponseEntity.ok(new Response<ResponseBookingDTO>("Booking fetched succesfully", LocalDateTime.now(), bookingDTO));
+        } catch (Exception e) {
+            return ResponseEntity.unprocessableEntity().body(new Response<String>("Couldn't get the booking", LocalDateTime.now(), e.getMessage()));
+        }
+    }
 
-        return ResponseEntity.ok(bookingDTO);
+    @PostMapping("/create")
+    public ResponseEntity<?> createBooking (@RequestBody BookingDTO requestBookingDTO){
+        try {
+            ResponseBookingDTO responseBookingDTO = bookingService.createBooking(requestBookingDTO);
+            return ResponseEntity.ok(new Response<ResponseBookingDTO>("Booking created succesfully", LocalDateTime.now(), responseBookingDTO));
+        } catch (Exception e) {
+            return ResponseEntity.unprocessableEntity().body(new Response<String>("Couldn't create the booking", LocalDateTime.now(), e.getMessage()));
+        }
     }
 }
